@@ -1,38 +1,35 @@
 import json
+from typing import List, Optional, Dict, Union
 
 class Product:
-    def __init__(self, name, quantity, price):
+    def __init__(self, name: str, quantity: int, price: float):
         self.name = name
         self.quantity = quantity
         self.price = price
 
-    # Obyekti JSON formatında yadda saxlamaq üçün dictionary-ə çeviririk
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Union[str, int, float]]:
         return {"name": self.name, "quantity": self.quantity, "price": self.price}
 
 class GroceryManager:
     def __init__(self):
-        self.items_list = []
+        self.items_list: List[Product] = []
 
-    def add_item(self, product):
-        # Eyni adlı məhsul varsa, sadəcə sayını artırırıq (Tapşırıqdakı "Unikallıq" tələbi)
+    def add_item(self, product: Product) -> str:
         for item in self.items_list:
             if item.name.lower() == product.name.lower():
                 item.quantity += product.quantity 
-                return "Updated"
-        
-        # Yoxdursa, yeni məhsulu siyahıya əlavə edirik
+                return "updated"
         self.items_list.append(product)
-        return "Added"
+        return "added"
 
-    def delete_item(self, name):
+    def delete_item(self, name: str) -> bool:
         for item in self.items_list:
             if item.name.lower() == name.lower():
                 self.items_list.remove(item)
                 return True
         return False
 
-    def update_item(self, name, new_qty, new_price):
+    def update_item(self, name: str, new_qty: int, new_price: float) -> bool:
         for item in self.items_list:
             if item.name.lower() == name.lower():
                 item.quantity = new_qty
@@ -40,28 +37,26 @@ class GroceryManager:
                 return True
         return False
 
-    def search_item(self, name):
+    def search_item(self, name: str) -> Optional[Product]:
         for item in self.items_list:
             if item.name.lower() == name.lower():
                 return item
         return None
 
-    def get_all_items(self):
+    def get_all_items(self) -> List[Product]:
         return self.items_list
 
-    def save_to_file(self, filename="grocery_data.json"):
-        with open(filename, "w") as file:
-            # Siyahıdakı hər bir Product obyektini dict-ə çevirib fayla yazırıq
+    def save_to_file(self, filename: str = "grocery_data.json"):
+        with open(filename, "w", encoding="utf-8") as file:
             data = [item.to_dict() for item in self.items_list]
             json.dump(data, file, indent=4)
 
-    def load_from_file(self, filename="grocery_data.json"):
-        self.items_list.clear() # Yükləməzdən əvvəl köhnə siyahını təmizləyirik
+    def load_from_file(self, filename: str = "grocery_data.json"):
+        self.items_list.clear()
         try:
-            with open(filename, "r") as file:
+            with open(filename, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 for row in data:
-                    new_product = Product(row["name"], row["quantity"], row["price"])
-                    self.items_list.append(new_product)
+                    self.items_list.append(Product(row["name"], row["quantity"], row["price"]))
         except FileNotFoundError:
-            pass # Fayl yoxdursa, heç nə etmə
+            pass
