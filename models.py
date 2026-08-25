@@ -9,6 +9,8 @@ class Product:
 
     def to_dict(self) -> Dict[str, Union[str, int, float]]:
         return {"name": self.name, "quantity": self.quantity, "price": self.price}
+    
+    # {"name": item.name, "quantity": item.quantity, "price": item.price}
 
 class GroceryManager:
     def __init__(self):
