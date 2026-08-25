@@ -2,17 +2,16 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from models import Product, GroceryManager
 
-# --- XÜSUSİ RƏNG PALİTRASI (DARK THEME) ---
-BG_COLOR = "#1E1E1E"       # Əsas arxa fon (Tünd qara)
-PANEL_COLOR = "#252526"    # Panellərin rəngi (VS Code tərzi)
-TEXT_COLOR = "#D4D4D4"     # Əsas yazı rəngi (Açıq boz)
-ENTRY_BG = "#3C3C3C"       # Giriş xanalarının rəngi
-ACCENT_BLUE = "#007ACC"    # Seçilmiş sətir rəngi
+BG_COLOR = "#1E1E1E"      
+PANEL_COLOR = "#252526"  
+TEXT_COLOR = "#D4D4D4"    
+ENTRY_BG = "#3C3C3C"      
+ACCENT_BLUE = "#007ACC"   
 
 class GroceryApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("PRO Grocery Manager - Dark Edition")
+        self.root.title("Grocery Manager ")
         self.root.geometry("850x650")
         self.root.configure(bg=BG_COLOR)
         
@@ -22,8 +21,7 @@ class GroceryApp:
         self.create_top_panel()
         self.create_middle_panel()
         self.create_bottom_panel()
-
-        # Başlanğıcda datanı avtomatik yükləmək (Opsional)
+      
         self.manager.load_from_file()
         self.refresh_table()
 
@@ -31,7 +29,6 @@ class GroceryApp:
         style = ttk.Style()
         style.theme_use("clam")
         
-        # Cədvəl Dizaynı
         style.configure("Treeview", 
                         background=PANEL_COLOR, 
                         foreground=TEXT_COLOR, 
@@ -40,14 +37,12 @@ class GroceryApp:
                         font=('Segoe UI', 10), 
                         rowheight=35)
         
-        # Sütun Başlıqları
         style.configure("Treeview.Heading", 
                         background="#333333", 
                         foreground="white", 
                         borderwidth=0, 
                         font=('Segoe UI', 11, 'bold'))
         
-        # Seçilən sətrin rəngi
         style.map('Treeview', background=[('selected', ACCENT_BLUE)])
 
     def create_top_panel(self):
@@ -78,14 +73,13 @@ class GroceryApp:
                              relief="flat", width=12, pady=8, activebackground=color, activeforeground="white",
                              command=command, cursor="hand2")
 
-        # Neon Rənglər
         buttons = [
-            make_btn("Add Item", "#2EA043", self.action_add),     # GitHub Green
-            make_btn("Delete", "#DA3633", self.action_delete),    # Coral Red
-            make_btn("Update", "#D29922", self.action_update),    # Gold/Orange
-            make_btn("Refresh", "#007ACC", self.refresh_table),   # VS Blue
-            make_btn("Search", "#8957E5", self.action_search),    # Purple
-            make_btn("Save File", "#238636", self.action_save),   # Deep Green
+            make_btn("Add Item", "#2EA043", self.action_add),     
+            make_btn("Delete", "#DA3633", self.action_delete),    
+            make_btn("Update", "#D29922", self.action_update),    
+            make_btn("Refresh", "#007ACC", self.refresh_table),   
+            make_btn("Search", "#8957E5", self.action_search),    
+            make_btn("Save File", "#238636", self.action_save),   
         ]
 
         for i, btn in enumerate(buttons):
@@ -103,8 +97,6 @@ class GroceryApp:
             self.tree.column(col, anchor="center")
         
         self.tree.pack(fill="both", expand=True)
-
-    # --- ƏMƏLİYYATLAR ---
 
     def get_inputs(self):
         name = self.entry_name.get().strip()
